@@ -73,6 +73,18 @@
         background: #4a3320;
         color: white;
         border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .btn-clear {
+        background-color: #d9534f;
+        width: auto;
+        padding: 0 15px;
+        font-size: 0.9em;
+    }
+    .btn-clear:hover {
+        background-color: #c9302c;
     }
 </style>
 </head>
@@ -159,11 +171,26 @@
 </div>
 
 <div class="total-container">
-    Total General: $<span id="total">0</span>
+    <button class="btn-clear" onclick="clearOrder()">Limpiar</button>
+    <div>Total General: $<span id="total">0</span></div>
 </div>
 
 <script>
+    const prices = { 'ny': 2000, 'bajon': 2500, 'choco': 2500, 'crunch': 2000, 'rocklets': 2000, 'red': 2500 };
     let total = 0;
+
+    function loadSavedData() {
+        total = 0;
+        for (let id in prices) {
+            let savedQty = localStorage.getItem('cookie_' + id) || 0;
+            savedQty = parseInt(savedQty);
+
+            document.getElementById('qty-' + id).innerText = savedQty;
+            document.getElementById('sub-' + id).innerText = savedQty * prices[id];
+            total += savedQty * prices[id];
+        }
+        document.getElementById('total').innerText = total;
+    }
 
     function updateQty(id, change, price) {
         const qtyElement = document.getElementById('qty-' + id);
@@ -174,10 +201,22 @@
         if (newQty >= 0) {
             qtyElement.innerText = newQty;
             subElement.innerText = newQty * price;
+            
             total += change * price;
             document.getElementById('total').innerText = total;
+            
+            localStorage.setItem('cookie_' + id, newQty);
         }
     }
+
+    function clearOrder() {
+        for (let id in prices) {
+            localStorage.setItem('cookie_' + id, 0);
+        }
+        loadSavedData();
+    }
+
+    window.onload = loadSavedData;
 </script>
 </body>
 </html>
