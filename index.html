@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cookie Lab Pedidos</title>
+<style>
+    body {
+        font-family: sans-serif;
+        background-color: #fdfaf0;
+        color: #4a3320;
+        padding: 20px;
+        max-width: 600px;
+        margin: auto;
+    }
+    .cookie-item {
+        background: white;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .details {
+        flex-grow: 1;
+    }
+    .details h3 {
+        margin: 0 0 5px 0;
+        font-size: 1.1em;
+    }
+    .details p {
+        margin: 0 0 5px 0;
+        font-size: 0.9em;
+        color: #666;
+    }
+    .item-subtotal {
+        font-size: 0.95em;
+        font-weight: bold;
+        color: #4a3320;
+    }
+    .controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    button {
+        background-color: #4a3320;
+        color: white;
+        border: none;
+        width: 35px;
+        height: 35px;
+        font-size: 1.2em;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #6b4c30;
+    }
+    .quantity {
+        font-size: 1.2em;
+        font-weight: bold;
+        min-width: 25px;
+        text-align: center;
+    }
+    .total-container {
+        margin-top: 20px;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: right;
+        padding: 15px;
+        background: #4a3320;
+        color: white;
+        border-radius: 8px;
+    }
+</style>
+</head>
+<body>
+
+<h2>The Cookie Lab</h2>
+
+<div class="cookie-item">
+    <div class="details">
+        <h3>Cookie New York ($2000)</h3>
+        <p>Cookie con chips de chocolate</p>
+        <div class="item-subtotal">Subtotal: $<span id="sub-ny">0</span></div>
+    </div>
+    <div class="controls">
+        <button onclick="updateQty('ny', -1, 2000)">-</button>
+        <span class="quantity" id="qty-ny">0</span>
+        <button onclick="updateQty('ny', 1, 2000)">+</button>
+    </div>
+</div>
+
+<div class="cookie-item">
+    <div class="details">
+        <h3>Cookie Bajón ($2500)</h3>
+        <p>Chips de chocolate blanco y semiamargo</p>
+        <div class="item-subtotal">Subtotal: $<span id="sub-bajon">0</span></div>
+    </div>
+    <div class="controls">
+        <button onclick="updateQty('bajon', -1, 2500)">-</button>
+        <span class="quantity" id="qty-bajon">0</span>
+        <button onclick="updateQty('bajon', 1, 2500)">+</button>
+    </div>
+</div>
+
+<div class="cookie-item">
+    <div class="details">
+        <h3>Choco Cookie ($2500)</h3>
+        <p>Cookie Chocotorta</p>
+        <div class="item-subtotal">Subtotal: $<span id="sub-choco">0</span></div>
+    </div>
+    <div class="controls">
+        <button onclick="updateQty('choco', -1, 2500)">-</button>
+        <span class="quantity" id="qty-choco">0</span>
+        <button onclick="updateQty('choco', 1, 2500)">+</button>
+    </div>
+</div>
+
+<div class="cookie-item">
+    <div class="details">
+        <h3>Cookie Crunch ($2000)</h3>
+        <p>Chips de chocolate y nueces</p>
+        <div class="item-subtotal">Subtotal: $<span id="sub-crunch">0</span></div>
+    </div>
+    <div class="controls">
+        <button onclick="updateQty('crunch', -1, 2000)">-</button>
+        <span class="quantity" id="qty-crunch">0</span>
+        <button onclick="updateQty('crunch', 1, 2000)">+</button>
+    </div>
+</div>
+
+<div class="cookie-item">
+    <div class="details">
+        <h3>Rocklets Cookie ($2000)</h3>
+        <p>Cookie con Rocklets</p>
+        <div class="item-subtotal">Subtotal: $<span id="sub-rocklets">0</span></div>
+    </div>
+    <div class="controls">
+        <button onclick="updateQty('rocklets', -1, 2000)">-</button>
+        <span class="quantity" id="qty-rocklets">0</span>
+        <button onclick="updateQty('rocklets', 1, 2000)">+</button>
+    </div>
+</div>
+
+<div class="cookie-item">
+    <div class="details">
+        <h3>Red Velvet ($2500)</h3>
+        <p>Cookie Red Velvet</p>
+        <div class="item-subtotal">Subtotal: $<span id="sub-red">0</span></div>
+    </div>
+    <div class="controls">
+        <button onclick="updateQty('red', -1, 2500)">-</button>
+        <span class="quantity" id="qty-red">0</span>
+        <button onclick="updateQty('red', 1, 2500)">+</button>
+    </div>
+</div>
+
+<div class="total-container">
+    Total General: $<span id="total">0</span>
+</div>
+
+<script>
+    let total = 0;
+
+    function updateQty(id, change, price) {
+        const qtyElement = document.getElementById('qty-' + id);
+        const subElement = document.getElementById('sub-' + id);
+        let currentQty = parseInt(qtyElement.innerText);
+        let newQty = currentQty + change;
+
+        if (newQty >= 0) {
+            qtyElement.innerText = newQty;
+            subElement.innerText = newQty * price;
+            total += change * price;
+            document.getElementById('total').innerText = total;
+        }
+    }
+</script>
+</body>
+</html>
